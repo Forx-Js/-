@@ -120,24 +120,22 @@ export default {
       }
     },
     handleLogin() {
-      this.$router.push({ path: this.redirect || "/" });
-      console.log(111);
-      // this.$refs.loginForm.validate(valid => {
-      //   if (valid) {
-      //     this.loading = true;
-      //     loginService.loginByUsername(this.loginForm)
-      //       .then(() => {
-      //         this.loading = false;
-      //         this.$router.push({ path: this.redirect || "/" });
-      //       })
-      //       .catch(() => {
-      //         this.loading = false;
-      //       });
-      //   } else {
-      //     console.log("error submit!!");
-      //     return false;
-      //   }
-      // });
+      this.$refs.loginForm.validate(valid => {
+        if (valid) {
+          this.loading = true;
+          loginService.loginByUsername(this.loginForm)
+            .then(() => {
+              this.loading = false;
+              this.$router.push({ path: this.redirect || "/" });
+            })
+            .catch(() => {
+              this.loading = false;
+            });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
     },
     afterQRScan() {
       // const hash = window.location.hash.slice(1)
