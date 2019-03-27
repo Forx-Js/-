@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ht.service.common.dao.DictPlaceDao">
+
+    <resultMap id="BaseResultMap" type="ht.service.common.po.DictPlace">
+        <id column="ID" property="id" />
+        <result column="Name" property="name" />
+        <result column="FullName" property="fullName" />
+        <result column="PlaceLevel" property="placeLevel" />
+    </resultMap>
+
+    <select id="findAllProvince" resultMap="BaseResultMap">
+      SELECT * FROM SysDicPlaceName WHERE PlaceLevel = 1 ORDER BY ID
+    </select>
+
+    <select id="findProvinceId" resultType="string">
+      SELECT SUBSTRING(ID, 1, 2) FROM SysDicPlaceName WHERE FullName = #{fullName}
+    </select>
+
+</mapper>

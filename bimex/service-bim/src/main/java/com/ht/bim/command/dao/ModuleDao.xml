@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ht.bim.command.dao.ModuleDao">
+
+    <select id="find" resultType="com.ht.bim.command.po.permission.SysModuleInfoPo">
+      select *
+      from SysModuleInfo m
+      where m.ModuleID = #{moduleID}
+    </select>
+    <select id="findModuleWeb" resultType="com.ht.bim.command.po.permission.SysModuleInfoWebPo">
+      select *
+      from SysModuleInfoWeb m
+      where m.ModuleID = #{moduleID}
+    </select>
+
+    <insert id="addModule" parameterType="com.ht.bim.command.dto.SysModuleInfoDto">
+    INSERT INTO SysModuleInfo(
+    ModuleID,
+    ModuleName,
+    PID,
+    ModuleType,
+    NodeType,
+    ModuleNameEn,
+    SortNum,
+    FuncName
+    )VALUES(
+    #{moduleID},
+    #{moduleName},
+    #{pID},
+    #{moduleType},
+    #{nodeType},
+    #{moduleNameEn},
+    #{sortNum},
+    #{funcName}
+    )
+    </insert>
+
+    <insert id="addModuleWeb" parameterType="com.ht.bim.command.dto.SysModuleInfoDto">
+    INSERT INTO SysModuleInfoWeb(
+    ModuleID,
+    PermissionName,
+    Url,
+    WebModuleType,
+    Icon,
+    OperUserID,
+    Operdate,
+    SortNum
+    )VALUES(
+    #{moduleID},
+    #{moduleName},
+    #{url},
+    #{moduleType},
+    #{icon},
+    #{operUserID},
+    #{operdate, javaType=java.util.Date, jdbcType=DATE},
+    #{sortNum}
+    )
+    </insert>
+
+    <update id="updateModule" parameterType="com.ht.bim.command.dto.SysModuleInfoDto">
+        UPDATE SysModuleInfo
+        SET ModuleName = #{moduleName},
+        PID = #{pID},
+        ModuleType = #{moduleType},
+        NodeType = #{nodeType},
+        ModuleNameEn = #{moduleNameEn},
+        SortNum = #{sortNum},
+        FuncName = #{funcName}
+        WHERE ModuleID = #{moduleID}
+    </update>
+
+    <update id="updateModuleWeb" parameterType="com.ht.bim.command.dto.SysModuleInfoDto">
+        UPDATE SysModuleInfoWeb
+        SET PermissionName = #{moduleName},
+        Url = #{url},
+        WebModuleType = #{moduleType},
+        Icon = #{icon},
+        SortNum = #{sortNum},
+        OperUserID = #{operUserID},
+        Operdate = #{operdate, javaType=java.util.Date, jdbcType=DATE}
+        WHERE ModuleID = #{moduleID}
+    </update>
+
+    <delete id="deleteModule" parameterType="string">
+        delete from SysModuleInfo where ModuleID = #{moduleID}
+    </delete>
+
+    <delete id="deleteModuleWeb" parameterType="string">
+        delete from SysModuleInfoWeb where ModuleID = #{moduleID}
+    </delete>
+    <delete id="deleteRoleModules">
+      DELETE FROM SysModuleRoleRela
+      WHERE roleID = #{roleID}
+    </delete>
+
+    <insert id="addModuleByRole" parameterType="com.ht.bim.command.dto.SysModuleInfoDto" >
+        INSERT INTO SysModuleRoleRela(
+        ModuleID,
+        RoleID,
+        Limit
+        )VALUES (
+        #{moduleID},
+        #{roleID},
+        #{limit}
+        )
+    </insert>
+
+    <update id="updateModuleByRole" parameterType="com.ht.bim.command.dto.SysModuleInfoDto">
+        update SysModuleRoleRela set
+        Limit = #{limit}
+        where ModuleID = #{moduleID} and RoleID = #{roleID}
+    </update>
+
+    <update id="updateSortNum" parameterType="com.ht.bim.command.dto.SysModuleInfoDto">
+        update SysModuleInfo set
+        SortNum = #{sortNum}
+        where ModuleID = #{moduleID}
+    </update>
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ht.bim.command.dao.RoleDao">
+    <insert id="addRole" parameterType="com.ht.bim.query.vo.SysRoleQueryVo">
+        INSERT INTO SysRole (
+        RoleID,
+        RoleName,
+        PID,
+        Type,
+        Remark
+        ) VALUES (
+        #{roleID},
+        #{roleName},
+        #{pID},
+        #{type},
+        #{remark}
+        )
+    </insert>
+    
+    <update id="updateRole" parameterType="com.ht.bim.query.vo.SysRoleQueryVo">
+        UPDATE SysRole
+        set RoleName = #{roleName},
+        PID = #{pID},
+        Type = #{type},
+        Remark = #{remark}
+        WHERE RoleID = #{roleID}
+    </update>
+
+    <delete id="deleteRole" parameterType="string">
+        DELETE FROM SysRole where RoleID = #{roleID}
+    </delete>
+
+    <insert id="adduserRole">
+        INSERT INTO SysUserRoleInfo (
+        UserID,
+        RoleID
+        ) VALUES (
+        #{s},
+        #{roleID}
+        )
+    </insert>
+
+    <delete id="deleteUserRole" parameterType="string">
+        DELETE FROM SysUserRoleInfo WHERE ID = #{iD}
+    </delete>
+</mapper>

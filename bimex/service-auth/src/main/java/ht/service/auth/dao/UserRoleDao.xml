@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ht.service.auth.dao.UserRoleDao">
+
+
+    <select id="findUserRoles" parameterType="string" resultType="string">
+        SELECT RoleID
+        FROM SysUserRoleInfo
+        where UserId = #{userId}
+    </select>
+    <select id="fileUserPermissions" resultType="java.lang.String">
+        SELECT distinct m.ModuleNameEn
+        FROM SysModuleRoleRela r
+        INNER JOIN SysModuleInfo m ON m.ModuleID = r.ModuleID
+        INNER JOIN SysUserRoleInfo ur ON ur.RoleID = r.RoleID
+        WHERE ur.UserID = #{userId}
+            AND r.Limit != '3'
+        ORDER BY m.ModuleNameEn
+    </select>
+
+
+</mapper>

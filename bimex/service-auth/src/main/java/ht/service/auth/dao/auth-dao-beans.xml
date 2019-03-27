@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <import resource="classpath*:service-dao-config.xml"/>
+
+    <bean id="userDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="sqlSessionTemplate" ref="sqlSessionTemplate"/>
+        <property name="mapperInterface" value="ht.service.auth.dao.UserDao"/>
+    </bean>
+    <bean id="userRoleDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="sqlSessionTemplate" ref="sqlSessionTemplate"/>
+        <property name="mapperInterface" value="ht.service.auth.dao.UserRoleDao"/>
+    </bean>
+    <bean id="menuItemDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="sqlSessionTemplate" ref="sqlSessionTemplate"/>
+        <property name="mapperInterface" value="ht.service.auth.dao.MenuItemDao"/>
+    </bean>
+
+    <bean id="departmentDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="sqlSessionTemplate" ref="sqlSessionTemplate"/>
+        <property name="mapperInterface" value="ht.service.auth.dao.DepartmentDao"/>
+    </bean>
+    <bean id="UserPassDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="sqlSessionTemplate" ref="sqlSessionTemplate"/>
+        <property name="mapperInterface" value="ht.service.auth.dao.UserPassDao"/>
+    </bean>
+</beans>

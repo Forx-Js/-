@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ht.service.common.dao.DictItemDao">
+
+    <resultMap id="BaseResultMap" type="ht.service.common.po.DictItem">
+        <result column="ID" property="id"/>
+        <result column="CNName" property="cnName"/>
+        <result column="ENName" property="enName"/>
+        <result column="PID" property="pID"/>
+        <result column="DicCode" property="dicCode"/>
+        <result column="SortNum" property="sortNum"/>
+        <result column="Remark" property="remark"/>
+    </resultMap>
+
+    <select id="findDictItems" parameterType="string" resultMap="BaseResultMap">
+        SELECT d.*
+        FROM SysDicContent d
+        where d.DicCode = #{dictCode}
+        <if test="pid!=null and pid!=''">
+        and pid = #{pid}
+        </if>
+        order by d.SortNum
+    </select>
+
+    <select id="findDictItemName" parameterType="map" resultType="string">
+        SELECT d.CNName
+        FROM SysDicContent d
+        where d.DicCode = #{dictCode}
+        AND d.ID = #{itemId}
+    </select>
+
+    <select id="findDictItemId" parameterType="map" resultType="string">
+        SELECT d.id
+        FROM SysDicContent d
+        where d.DicCode = #{dictCode}
+        AND d.CNName = #{itemName}
+    </select>
+
+</mapper>

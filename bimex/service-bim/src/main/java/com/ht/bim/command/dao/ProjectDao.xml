@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ht.bim.command.dao.ProjectDao">
+
+    <insert id="addProject" parameterType="com.ht.bim.command.dto.ProjectQueryDto">
+        INSERT INTO ProjectInfo(
+        ProjectID,
+        ProjectName,
+        Remark,
+        Status
+        )VALUES (
+        #{projectID},
+        #{projectName},
+        #{remark},
+        #{status}
+        )
+    </insert>
+
+    <update id="updateProject" parameterType="com.ht.bim.command.dto.ProjectQueryDto">
+        UPDATE ProjectInfo
+        SET ProjectName = #{projectName},
+        Remark = #{remark},
+        Status = #{status}
+        WHERE ProjectID = #{projectID}
+    </update>
+
+    <insert id="addUserProject" parameterType="com.ht.bim.command.dto.ProjectUserDto">
+        INSERT INTO ProjectUserInfo(
+        ID,
+        ProjectID,
+        UserID,
+        IsPrjManage,
+        IsBMManage
+        )VALUES (
+        #{iD},
+        #{projectID},
+        #{userID},
+        #{isPrjManage},
+        #{isBMManage}
+        )
+    </insert>
+
+    <update id="updateProjectUserRole" parameterType="com.ht.bim.command.dto.ProjectUserDto">
+        UPDATE ProjectUserInfo
+        set IsPrjManage = #{isPrjManage},
+        IsBMManage = #{isBMManage}
+        where ID = #{iD}
+    </update>
+</mapper>

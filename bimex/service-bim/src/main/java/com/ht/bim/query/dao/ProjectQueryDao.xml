@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ht.bim.query.dao.ProjectQueryDao">
+    <select id="queryProject"  resultType="com.ht.bim.query.vo.ProjectQueryVo">
+        SELECT * FROM ProjectInfo
+    </select>
+
+    <select id="queryProjectByID"  resultType="com.ht.bim.query.vo.ProjectQueryVo">
+        SELECT * FROM ProjectInfo where ProjectID = #{projectID}
+    </select>
+
+    <select id="getProjectUserBy" resultType="com.ht.bim.command.dto.ProjectUserDto">
+        select * from ProjectUserInfo where ProjectID = #{projectID} and UserID = #{s}
+    </select>
+
+    <select id="queryIsPrjorBm" parameterType="com.ht.bim.command.dto.ProjectUserDto" resultType="com.ht.bim.command.dto.ProjectUserDto">
+        select * from ProjectUserInfo where 1=1
+        <if test="isPrjManage != null">
+            and IsPrjManage = #{isPrjManage}
+        </if>
+        <if test="isBMManage != null">
+            and IsBMManage = #{isBMManage}
+        </if>
+        and ProjectID = #{projectID}
+    </select>
+
+    <select id="queryPrjManage" parameterType="string" resultType="com.ht.bim.query.vo.SysUserQueryVo">
+        SELECT u.Userid,u.Name FROM ProjectUserInfo p inner join SysUserInfo u on p.UserID = U.UserID WHERE p.ProjectID = #{projectID} and p.IsPrjManage = 1
+    </select>
+</mapper>

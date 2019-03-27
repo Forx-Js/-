@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+
+    <!-- 开启aspectJ支持, 强制使用cglib实现动态代理 -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <bean class="ht.framework.beans.BeanFactory"/>
+    <bean id="timeSource" class="ht.framework.util.TimeSource"/>
+
+    <context:component-scan base-package="ht.*"/>
+
+    <!--<import resource="service-dao-config.xml"/>-->
+    <import resource="**/*-dao-beans.xml"/>
+
+    <mongo:repositories base-package="com.ht.bim.repository"/>
+
+</beans>

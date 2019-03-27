@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ht.bim.query.dao.WorkTimeQueryDao">
+    <select id="queryWorkTime" parameterType="com.ht.bim.command.dto.WorkTimeDto" resultType="com.ht.bim.query.vo.WorkTimeVo">
+        SELECT * FROM WorkTimeInfo WHERE 1=1
+        <if test="operUserID !=null and operUserID != ''">
+            AND OperUserID = #{operUserID}
+        </if>
+        <if test="commitTime != null and openTime != null">
+            AND OpenTime BETWEEN #{openTime} and #{commitTime}
+        </if>
+        <if test="commitTime == null and openTime != null">
+            AND OpenTime = #{openTime}
+        </if>
+        <if test="projectID !=null and projectID != ''">
+            AND ProjectID = #{projectID}
+        </if>
+        <if test="statusList!= null">
+            and Status in
+            <foreach item="item" index="index" collection="statusList" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="queryWorkTimeByID" parameterType="string" resultType="com.ht.bim.query.vo.WorkTimeVo">
+        SELECT * FROM WorkTimeInfo WHERE ID = #{iD}
+    </select>
+</mapper>

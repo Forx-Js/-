@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ht.bim.command.dao.SysFormJsonDao">
+    <sql id="allColumns">
+        FormJsonID,
+        FormID,
+        FormJson,
+        CreateTime,
+        CreateUserID
+    </sql>
+    <insert id="create">
+        INSERT INTO SysFormJson (
+            FormJsonID,
+            FormID,
+            FormJson,
+            CreateTime,
+            CreateUserID
+        ) VALUES (
+            #{formJsonID},
+            #{formID},
+            #{formJson},
+            #{createTime, javaType=java.util.Date, jdbcType=TIMESTAMP},
+            #{createUserID}
+        )
+    </insert>
+    <update id="update">
+        UPDATE SysFormJson
+        SET
+            FormJsonID   = #{formJsonID},
+            FormID       = #{formID},
+            FormJson     = #{formJson},
+            CreateTime   = #{createTime, javaType=java.util.Date, jdbcType=TIMESTAMP},
+            CreateUserID = #{createUserID}
+        WHERE
+            FormJsonID = #{formJsonID}
+    </update>
+    <delete id="delete">
+        DELETE FROM SysFormJson
+        WHERE
+            FormJsonID = #{formJsonID}
+    </delete>
+    <select id="find" resultType="com.ht.bim.command.po.SysFormJsonPo">
+        SELECT *
+        FROM SysFormJson
+        WHERE
+            FormJsonID = #{formJsonID}
+    </select>
+
+
+</mapper>

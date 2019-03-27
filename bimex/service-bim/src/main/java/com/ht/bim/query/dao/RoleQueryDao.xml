@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ht.bim.query.dao.RoleQueryDao">
+    <select id="queryRoles" parameterType="int" resultType="com.ht.bim.query.vo.SysRoleQueryVo">
+        SELECT *
+        FROM SysRole
+        WHERE Type = #{type}
+        order by RoleName ASC
+    </select>
+
+    <select id="queryRoleUsers" parameterType="com.ht.bim.command.dto.SysUserRoleInfoDto"
+            resultType="com.ht.bim.query.vo.SysUserRoleQueryVo">
+        SELECT u.UserID,u.UserName,u.Name,r.ID
+        FROM SysUserInfo u
+        inner join SysUserRoleInfo r on u.UserID = r.UserID
+        where r.RoleID = #{roleID}
+        <if test="keyWord != null and keyWord != ''">
+            AND (
+            u.UserName like '%' + #{keyWord} + '%'
+            or u.Name  like  '%' + #{keyWord} + '%'
+            )
+        </if>
+        ORDER BY u.Name ASC
+    </select>
+</mapper>

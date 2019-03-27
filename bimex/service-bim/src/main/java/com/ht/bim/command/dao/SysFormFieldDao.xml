@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ht.bim.command.dao.SysFormFieldDao">
+    <sql id="allColumns">
+        FormFieldID,
+        FormID,
+        FieldName,
+        FieldType,
+        DataFuncName,
+        FieldCaption,
+        DataOrder,
+        IfTableColumn,
+        TableColumnOrder
+    </sql>
+    <insert id="create">
+        INSERT INTO SysFormField (
+            FormFieldID,
+            FormID,
+            FieldName,
+            FieldType,
+            DataFuncName,
+            FieldCaption,
+            DataOrder,
+            IfTableColumn,
+            TableColumnOrder
+        ) VALUES (
+            #{formFieldID},
+            #{formID},
+            #{fieldName},
+            #{fieldType},
+            #{dataFuncName},
+            #{fieldCaption},
+            #{dataOrder},
+            #{ifTableColumn},
+            #{tableColumnOrder}
+        )
+    </insert>
+    <update id="update">
+        UPDATE SysFormField
+        SET
+            FormID           = #{formID},
+            FieldName        = #{fieldName},
+            FieldType        = #{fieldType},
+            DataFuncName     = #{dataFuncName},
+            FieldCaption     = #{fieldCaption},
+            DataOrder        = #{dataOrder},
+            IfTableColumn    = #{ifTableColumn},
+            TableColumnOrder = #{tableColumnOrder}
+        WHERE
+            FormFieldID = #{formFieldID}
+    </update>
+    <delete id="delete">
+        DELETE FROM SysFormField
+        WHERE
+            FormFieldID = #{formFieldID}
+    </delete>
+    <select id="find" resultType="com.ht.bim.command.po.SysFormFieldPo">
+        SELECT *
+        FROM SysFormField
+        WHERE
+            FormFieldID = #{formFieldID}
+    </select>
+
+
+</mapper>

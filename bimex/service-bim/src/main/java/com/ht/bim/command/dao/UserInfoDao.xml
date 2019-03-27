@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ht.bim.command.dao.UserInfoDao">
+
+    <!--添加人员信息-->
+    <insert id="addSysUserInfo" parameterType="com.ht.bim.command.dto.SysUserInfo">
+        INSERT INTO SysUserInfo(
+        UserID,
+        UserName,
+        PassWord,
+        StaffID,
+        Name,
+        Sex,
+        Nation,
+        BirthDay,
+        NativePlace,
+        IDCard,
+        PhoneNum,
+        TelNum,
+        Address,
+        Status,
+        Type,
+        WorkTypeCode,
+        WorkType,
+        HeadURL,
+        PrjID,
+        IfDelete,
+        OperUserID,
+        OperTime,
+        domainAccount
+        )VALUES (
+        #{userID},
+        #{userName},
+        #{passWord},
+        #{staffID},
+        #{name},
+        #{sex},
+        #{nation},
+        #{birthDay, javaType=java.util.Date, jdbcType=DATE},
+        #{nativePlace},
+        #{iDCard},
+        #{phoneNum},
+        #{telNum},
+        #{address},
+        #{status},
+        #{type},
+        #{workTypeCode},
+        #{workType},
+        #{headURL},
+        #{prjID},
+        #{ifDelete},
+        #{operUserID},
+        #{operTime, javaType=java.util.Date, jdbcType=DATE},
+        #{domainAccount}
+        )
+    </insert>
+
+    <!--修改人员信息-->
+    <update id="updateSysUserInfo" parameterType="com.ht.bim.command.dto.SysUserInfo">
+        UPDATE SysUserInfo
+        SET UserName = #{userName},
+        PassWord = #{passWord},
+        StaffID = #{staffID},
+        Name = #{name},
+        Sex = #{sex},
+        Nation = #{nation},
+        BirthDay = #{birthDay, javaType=java.util.Date, jdbcType=DATE},
+        NativePlace = #{nativePlace},
+        IDCard = #{iDCard},
+        PhoneNum = #{phoneNum},
+        TelNum = #{telNum},
+        Address = #{address},
+        Status = #{status},
+        Type = #{type},
+        WorkTypeCode = #{workTypeCode},
+        WorkType = #{workType},
+        HeadURL = #{headURL},
+        PrjID = #{prjID},
+        IfDelete = #{ifDelete},
+        OperUserID = #{operUserID},
+        OperTime = #{operTime, javaType=java.util.Date, jdbcType=DATE},
+        domainAccount = #{domainAccount}
+        where UserID = #{userID}
+    </update>
+
+    <!--删除人员信息-->
+    <delete id="delSysUserInfo" parameterType="java.lang.String">
+        DELETE FROM SysUserInfo WHERE UserID = #{userID}
+    </delete>
+</mapper>

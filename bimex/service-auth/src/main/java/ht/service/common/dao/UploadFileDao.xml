@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ht.service.common.dao.UploadFileDao">
+
+    <resultMap id="BaseResultMap" type="ht.service.common.po.UploadFilePo">
+        <result column="FileKey" property="fileKey"/>
+        <result column="FileType" property="fileType"/>
+        <result column="FilePath" property="filePath"/>
+        <result column="CreateTime" property="createTime"/>
+        <result column="UserId" property="userId"/>
+        <result column="IfValid" property="ifValid"/>
+        <result column="IfValid" property="ifValid"/>
+        <result column="ThumbPath" property="thumbPath"/>
+        <result column="FileName" property="fileName"/>
+    </resultMap>
+
+    <select id="find" parameterType="string" resultMap="BaseResultMap">
+        SELECT d.*
+        FROM UploadFileInfo d
+        where FileKey = #{fileKey}
+    </select>
+
+    <update id="create" parameterType="ht.service.common.po.UploadFilePo">
+        INSERT INTO UploadFileInfo(
+            FileKey,
+            FileType,
+            FilePath,
+            CreateTime,
+            UserId,
+            IfValid,
+            ThumbPath,
+            FileName,
+            RealName
+        )VALUES (
+            #{fileKey},
+            #{fileType},
+            #{filePath},
+            #{createTime, javaType=java.util.Date, jdbcType=TIMESTAMP},
+            #{userId},
+            #{ifValid},
+            #{thumbPath},
+            #{fileName},
+            #{realName}
+        )
+    </update>
+    <update id="updateToValid" parameterType="string">
+        UPDATE UploadFileInfo SET
+          IfValid = 1
+        WHERE FileKey = #{fileKey}
+    </update>
+
+</mapper>

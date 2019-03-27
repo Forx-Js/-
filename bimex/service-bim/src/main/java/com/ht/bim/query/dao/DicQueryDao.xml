@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ht.bim.query.dao.DicQueryDao">
+
+    <!--查询数据字典列表 -->
+    <select id="queryDicList" resultType="com.ht.bim.query.vo.SysDicInfoQueryVo">
+        SELECT * FROM SysDicInfo ORDER BY SortNum,DicID
+    </select>
+
+    <!--查询数据字典内容 -->
+    <select id="queryDicInfo" resultType="com.ht.bim.command.po.DictItem">
+        SELECT * FROM SysDicContent WHERE DicCode = #{dicCode} ORDER BY SortNum,ID
+    </select>
+
+    <!--查询数据字典内容详情 -->
+    <select id="queryDetail" resultType="com.ht.bim.command.po.DictItem">
+        SELECT * FROM SysDicContent WHERE ID = #{id}
+    </select>
+</mapper>

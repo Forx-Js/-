@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ht.service.auth.dao.DepartmentDao">
+
+    <resultMap id="BaseResultMap" type="ht.service.auth.po.Department">
+        <result column="DepartmentId" property="departmentId"/>
+        <result column="DepartmentName" property="departmentName"/>
+        <result column="PID" property="parentDepartmentId"/>
+    </resultMap>
+
+    <select id="findDepartments" parameterType="string" resultMap="BaseResultMap">
+        SELECT d.*
+        FROM sysDepartment d
+        INNER JOIN SysUserRoleInfo r on d.departmentId = r.RoleID
+        where r.UserID = #{userId}
+          and r.RoleID != 'corp'
+        UNION ALL
+        SELECT d.*
+        FROM sysDepartment d
+        WHERE DepartmentID = 'corp'
+            and EXISTS(
+              SELECT NULL
+              FROM SysUserInfo r
+              INNER JOIN PrjInfo p on r.PrjID = p.PrjID
+              where r.UserID = #{userId}
+                AND r.PrjID is not null)
+    </select>
+    <select id="findPositions" parameterType="string" resultMap="BaseResultMap">
+        SELECT d.*
+        FROM sysDepartment d
+        INNER JOIN SysUserRoleInfo r on d.departmentId = r.PositionID
+        where r.UserID = #{userId}
+    </select>
+
+    <select id="findPositionsByDepId" parameterType="string" resultMap="BaseResultMap">
+        SELECT d.*
+        FROM SysDepartment d
+        where PID = #{depId}
+    </select>
+
+    <select id="findPositionsByPostID" parameterType="string" resultMap="BaseResultMap">
+        SELECT d.*
+        FROM SysDepartment d
+        where d.DepartmentID = #{departmentID}
+    </select>
+
+
+</mapper>

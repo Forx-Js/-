@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ht.service.auth.dao.MenuItemDao">
+
+    <resultMap id="BaseResultMap" type="ht.service.auth.po.MenuItem">
+        <result column="MenuID" property="menuItemId"/>
+        <result column="Title" property="title"/>
+        <result column="PID" property="parentMenuItemId"/>
+        <result column="Visible" property="visible"/>
+        <result column="DisplayOrder" property="orderIndex"/>
+        <result column="Url" property="url"/>
+        <result column="Icon" property="icon"/>
+        <result column="FocusIcon" property="focusIcon"/>
+    </resultMap>
+
+    <resultMap id="ViewResultMap" type="ht.service.auth.view.MenuItemView">
+        <result column="MenuID" property="menuItemId"/>
+        <result column="Title" property="title"/>
+        <result column="PID" property="parentMenuItemId"/>
+        <result column="Visible" property="visible"/>
+        <result column="DisplayOrder" property="orderIndex"/>
+        <result column="Url" property="url"/>
+        <result column="Icon" property="icon"/>
+        <result column="FocusIcon" property="focusIcon"/>
+    </resultMap>
+
+    <select id="findDepartmentVisibleMenuItems" resultType="String" resultMap="ViewResultMap">
+        SELECT m.*
+        FROM SysDepartmentMenu dm
+        INNER JOIN SysMenu m on dm.MenuID = m.MenuID
+        where dm.DepartmentID = #{DepartmentID}
+          AND m.visible = 1
+        order by dm.DisplayOrder
+    </select>
+
+</mapper>

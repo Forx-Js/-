@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ht.bim.query.dao.UserInfoQueryDao">
+
+    <!--根据条件查询人员信息-->
+    <select id="querySysUserInfo" parameterType="com.ht.bim.command.dto.SysUserQueryDto"
+            resultType="com.ht.bim.query.vo.SysUserQueryVo">
+        SELECT d.*
+        FROM SysUserInfo d
+        WHERE 1=1
+        <if test="keyWord != null and keyWord != ''">
+            AND (d.UserName like '%' + #{keyWord} + '%'
+                or d.Name like '%' + #{keyWord} + '%'
+                or d.StaffID like '%' + #{keyWord} + '%'
+            )
+        </if>
+        <if test="status != null and status != '' or status == 0 ">
+            AND d.Status = #{status}
+        </if>
+        order by d.Name ASC
+    </select>
+
+    <!--查询人员详情 -->
+    <select id="querySysUserDetail" parameterType="string" resultType="com.ht.bim.query.vo.SysUserQueryVo">
+        SELECT *
+        FROM SysUserInfo
+        where
+        UserID = #{userID}
+    </select>
+</mapper>

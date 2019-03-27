@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ht.bim.query.dao.ModuleQueryDao">
+    <select id="queryModule" resultType="com.ht.bim.query.vo.SysModuleQueryVo">
+        SELECT a.*,b.Url,b.Icon FROM SysModuleInfo a inner join SysModuleInfoWeb b on a.ModuleID = b.ModuleID
+        <if test="pid == null || pid == ''">
+            WHERE PID IS NULL OR PID = ''
+        </if>
+        <if test="pid != null and pid != ''">
+            WHERE PID = #{pid}
+        </if>
+        ORDER BY SortNum ASC
+    </select>
+    <select id="queryLimit" parameterType="com.ht.bim.command.dto.SysModuleDto"
+            resultType="java.lang.Integer">
+        SELECT TOP 1 Limit
+        FROM SysModuleRoleRela
+         where ModuleID = #{moduleID}
+          and RoleID = #{roleID}
+    </select>
+</mapper>

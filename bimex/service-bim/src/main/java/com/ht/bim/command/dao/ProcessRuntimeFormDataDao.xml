@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ht.bim.command.dao.ProcessRuntimeFormDataDao">
+    <select id="findByKeyFields" resultType="com.ht.bim.command.po.ProcessRuntimeFormDataPo">
+      SELECT *
+      FROM ProcessRuntimeFormData
+      WHERE
+        FormConfigID = #{formConfigID}
+        AND RunTimeID = #{runtimeID}
+    </select>
+    <select id="find" resultType="com.ht.bim.command.po.ProcessRuntimeFormDataPo">
+      SELECT *
+      FROM ProcessRuntimeFormData
+      WHERE
+          RuntimeFormDataID = #{runtimeFormDataID}
+    </select>
+
+    <insert id="create">
+        INSERT INTO ProcessRuntimeFormData (
+        RuntimeFormDataID,
+        FormConfigID,
+        RunTimeID,
+        ProcessID,
+        NodeID,
+        CreateTime,
+        CreateUserID,
+        UpdateTime,
+        UpdateUserID,
+        DataJson
+        ) VALUES (
+        #{runtimeFormDataID},
+        #{formConfigID},
+        #{runTimeID},
+        #{processID},
+        #{nodeID},
+        #{createTime, javaType=java.util.Date, jdbcType=TIMESTAMP},
+        #{createUserID},
+        #{updateTime, javaType=java.util.Date, jdbcType=TIMESTAMP},
+        #{updateUserID},
+        #{dataJson}
+        )
+    </insert>
+    <update id="update">
+        UPDATE ProcessRuntimeFormData SET
+        FormConfigID = #{formConfigID},
+        RunTimeID = #{runTimeID},
+        ProcessID = #{processID},
+        NodeID = #{nodeID},
+        CreateTime = #{createTime, javaType=java.util.Date, jdbcType=TIMESTAMP},
+        CreateUserID = #{createUserID},
+        UpdateTime = #{updateTime, javaType=java.util.Date, jdbcType=TIMESTAMP},
+        UpdateUserID = #{updateUserID},
+        DataJson = #{dataJson}
+        where
+          RuntimeFormDataID = #{runtimeFormDataID}
+    </update>
+    <update id="delete">
+        DELETE FROM
+          ProcessRuntimeFormData
+        where
+          RuntimeFormDataID = #{runtimeFormDataID}
+    </update>
+
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ht.service.common.dao.SerialNoDao">
+
+    <resultMap id="BaseResultMap" type="ht.service.common.po.SerialNoPo">
+        <result column="SerialName" property="serialName"/>
+        <result column="CurrentValue" property="currentValue"/>
+        <result column="ValueLength" property="valueLength"/>
+        <result column="Prefix" property="prefix"/>
+        <result column="Suffix" property="suffix"/>
+        <result column="Ver" property="ver"/>
+    </resultMap>
+    <insert id="create">
+        INSERT INTO PubSerialNo(
+        SerialName,
+        CurrentValue,
+        ValueLength,
+        Prefix,
+        Suffix,
+        Ver
+        )VALUES (
+        #{serialName},
+        #{currentValue},
+        #{valueLength},
+        #{prefix},
+        #{suffix},
+        #{ver}
+        )
+    </insert>
+
+    <select id="find" parameterType="string" resultMap="BaseResultMap">
+        SELECT d.*
+        FROM PubSerialNo d
+        where SerialName = #{serialName}
+    </select>
+
+    <update id="lockRecord" parameterType="string">
+        update PubSerialNo
+        set Ver = 123
+        where SerialName = #{serialName}
+    </update>
+
+    <update id="updateNewValue" parameterType="map">
+        update PubSerialNo
+        set CurrentValue = #{newValue}
+        where SerialName = #{serialName}
+        and CurrentValue = #{oldValue}
+    </update>
+
+</mapper>

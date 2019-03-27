@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ht.bim.command.dao.DicDao">
+
+    <!--查询最大序列号 -->
+    <select id="autoCalcSortNum" parameterType="com.ht.bim.command.po.DictItem" resultType="int">
+        SELECT
+            MAX (SortNum)
+        FROM
+            SysDicContent
+        WHERE
+            DicCode = #{dicCode}
+    </select>
+
+    <!-- 添加字典内容 -->
+    <insert id="addDicContent" parameterType="com.ht.bim.command.po.DictItem" >
+        INSERT INTO SysDicContent (
+            ID,
+            CNName,
+            DicCode,
+            SortNum,
+            Remark
+        )VALUES (
+            #{id},
+            #{cnName},
+            #{dicCode},
+            #{sortNum},
+            #{remark}
+        )
+    </insert>
+
+    <!--删除字典内容 -->
+    <delete id="deleteDicContentBatch" >
+        DELETE
+        FROM
+        SysDicContent
+        WHERE
+        ID IN
+        <foreach collection="ids" item="item"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!--修改字典内容 -->
+    <update id="updateDicContent">
+        UPDATE SysDicContent
+        SET CNName = #{dic.cnName},
+         DicCode = #{dic.dicCode},
+         Remark = #{dic.remark}
+        WHERE
+            ID = #{dic.id}
+    </update>
+</mapper>

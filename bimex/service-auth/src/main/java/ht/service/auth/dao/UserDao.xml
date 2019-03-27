@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ht.service.auth.dao.UserDao">
+
+    <resultMap id="BaseResultMap" type="ht.service.auth.po.User">
+        <result column="UserId" property="userId"/>
+        <result column="UserName" property="userName"/>
+        <result column="Name" property="name"/>
+        <result column="PhoneNum" property="phoneNum"/>
+        <result column="ifOpenWebLogin" property="ifOpenWebLogin"/>
+        <result column="ifOpenAppLogin" property="ifOpenAppLogin"/>
+        <result column="firstWebLoginTime" property="firstWebLoginTime"/>
+        <result column="firstAppLoginTime" property="firstAppLoginTime"/>
+        <result column="domainAccount" property="domainAccount"/>
+    </resultMap>
+
+
+    <select id="find" parameterType="string" resultMap="BaseResultMap">
+        SELECT * FROM SysUserInfo
+        where UserId = #{userId}
+    </select>
+
+
+    <select id="findByName" parameterType="string" resultMap="BaseResultMap">
+        SELECT *
+        FROM SysUserInfo
+        where UserName = #{loginName}
+    </select>
+
+
+    <resultMap id="SecurityTokenMap" type="ht.service.auth.po.UserSecurityToken">
+        <result column="UserId" property="userId"/>
+        <result column="Password" property="password"/>
+    </resultMap>
+
+    <select id="findSecurityToken" parameterType="string" resultMap="SecurityTokenMap">
+        SELECT *
+        FROM SysUserInfo
+        where UserId = #{userId}
+    </select>
+
+    <select id="findSecurityTokenNew" parameterType="string" resultMap="SecurityTokenMap">
+        SELECT *
+        FROM SysUserPass
+        where UserId = #{userId}
+    </select>
+
+
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT *
+        FROM SysUserInfo
+    </select>
+
+    <insert id="createSession" parameterType="ht.service.auth.po.DbSession">
+        INSERT INTO SysUserSession (
+            Token,
+            TerminalType,
+            UserID,
+            LoginTime,
+            LoginIP,
+            ImeiNo,
+            sessionString,
+            RefreshTime,
+            ifActive
+        )VALUES (
+            #{token},
+            #{terminalType},
+            #{userId},
+            #{loginTime, javaType=java.util.Date, jdbcType=TIMESTAMP},
+            #{loginIp},
+            #{imeiNo},
+            #{sessionString},
+            #{refreshTime, javaType=java.util.Date, jdbcType=TIMESTAMP},
+            #{ifActive}
+        )
+    </insert>
+
+    <update id="updateSession">
+    UPDATE SysUserSession SET
+        UserID = #{userId},
+        LoginTime = #{loginTime, javaType=java.util.Date, jdbcType=TIMESTAMP},
+        LoginIP = #{loginIp},
+        ImeiNo = #{imeiNo},
+        SessionString = #{sessionString},
+        RefreshTime = #{refreshTime, javaType=java.util.Date, jdbcType=TIMESTAMP},
+        LogoutTime = #{logoutTime, javaType=java.util.Date, jdbcType=TIMESTAMP},
+        IfActive = #{ifActive},
+        TerminalType = #{terminalType}
+    where
+              Token = #{token}
+    </update>
+    <insert id="create" parameterType="ht.service.auth.po.UserPo">
+        INSERT INTO SysUserInfo(
+            UserID,
+            UserName,
+            staffID,
+            Name,
+            Sex,
+            Nation,
+            BirthDay,
+            NativePlace,
+            IDCard,
+            PhoneNum,
+            TelNum,
+            Address,
+            Status,
+            Type,
+            WorkTypeCode,
+            WorkType,
+            HeadURL,
+            PrjID,
+            IfDelete,
+            OperUserID,
+            OperTime,
+            domainAccount
+        ) VALUES (
+            #{userID},
+            #{userName},
+            #{staffID},
+            #{name},
+            #{sex},
+            #{nation},
+            #{birthDay, javaType=java.util.Date, jdbcType=TIMESTAMP},
+            #{nativePlace},
+            #{iDCard},
+            #{phoneNum},
+            #{telNum},
+            #{address},
+            #{status},
+            #{type},
+            #{workTypeCode},
+            #{workType},
+            #{headURL},
+            #{prjID},
+            #{ifDelete},
+            #{operUserID},
+            #{operTime, javaType=java.util.Date, jdbcType=TIMESTAMP},
+            #{domainAccount}
+        )
+    </insert>
+    <select id="findByToken" resultMap="BaseResultMap">
+        SELECT u.*
+        FROM SysUserInfo u
+        INNER JOIN SysUserSession t ON u.UserId = t.UserId
+        where t.Token = #{token}
+        and (t.ifActive is null or t.ifActive = 1)
+    </select>
+
+    <resultMap type="ht.service.auth.po.DbSession" id="SessionMap">
+        <result column="Token" property="token"/>
+        <result column="terminalType" property="terminalType"/>
+        <result column="UserID" property="userId"/>
+        <result column="LoginTime" property="loginTime"/>
+        <result column="LoginIP" property="loginIp"/>
+        <result column="ImeiNo" property="imeiNo"/>
+        <result column="LogoutTime" property="logoutTime"/>
+        <result column="RefreshTime" property="refreshTime"/>
+        <result column="ifActive" property="ifActive"/>
+    </resultMap>
+    <select id="findSession" resultMap="SessionMap">
+      SELECT *
+      FROM SysUserSession t
+      where t.Token = #{token}
+        and (t.ifActive is null or t.ifActive = 1)
+    </select>
+
+    <update id="revokeSession" parameterType="string">
+        UPDATE SysUserSession set
+            LogoutTime = getdate(),
+            SessionString = null,
+            ifActive = 0
+        where Token = #{token}
+    </update>
+
+    <select id="findUserPosition" resultType="java.lang.String" parameterType="string">
+      SELECT DISTINCT PositionId
+      FROM SysUserRoleInfo t
+      where t.UserID = #{userId}
+        and t.PositionId is not null
+    </select>
+
+    <update id="updateSecurityToken" parameterType="ht.service.auth.po.UserSecurityToken">
+      UPDATE SysUserInfo
+        set Password = #{password}
+        where UserId = #{userId}
+    </update>
+
+    <update id="openWebLogin" parameterType="map">
+      UPDATE SysUserInfo set
+          ifOpenWebLogin = 1,
+          firstWebLoginTime = #{openTime, javaType=java.util.Date, jdbcType=TIMESTAMP}
+        where UserId = #{userId}
+    </update>
+
+    <update id="openAppLogin" parameterType="map">
+        UPDATE SysUserInfo set
+            ifOpenAppLogin = 1,
+            firstAppLoginTime = #{openTime, javaType=java.util.Date, jdbcType=TIMESTAMP}
+        where UserId = #{userId}
+    </update>
+
+    <select id="validateIfUserEnabledLogin" parameterType="ht.service.auth.po.User" resultType="Integer">
+        SELECT
+            Enabled
+        FROM
+            SysAdminUser
+        WHERE
+            UserID = #{userId}
+    </select>
+    <select id="findUserWithInvalidPassword" resultType="ht.service.auth.po.User">
+        SELECT u.UserID
+        FROM SysUserInfo u
+        WHERE NOT EXISTS (
+          SELECT NULL FROM SysUserPass p
+          WHERE p.UserID = u.UserID
+        )
+    </select>
+</mapper>

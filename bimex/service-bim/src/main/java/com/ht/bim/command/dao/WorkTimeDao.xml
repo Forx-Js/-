@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ht.bim.command.dao.WorkTimeDao">
+
+    <!--添加工时记录-->
+    <insert id="addWorkTime" parameterType="com.ht.bim.command.dto.WorkTimeDto">
+        INSERT INTO WorkTimeInfo(
+        ID,
+        ProjectID,
+        ProjectName,
+        Details,
+        Approver,
+        WorkTime,
+        OverTime,
+        OpenTime,
+        CommitTime,
+        Status,
+        WithdrawReason,
+        RejectReason,
+        OperUserID,
+        OperTime
+        )VALUES (
+        #{iD},
+        #{projectID},
+        #{projectName},
+        #{details},
+        #{approver},
+        #{workTime},
+        #{overTime},
+        #{openTime, javaType=java.util.Date, jdbcType=DATE},
+        #{commitTime, javaType=java.util.Date, jdbcType=DATE},
+        #{status},
+        #{withdrawReason},
+        #{rejectReason},
+        #{operUserID},
+        #{operTime, javaType=java.util.Date, jdbcType=DATE}
+        )
+    </insert>
+
+    <update id="updateWorkTime" parameterType="com.ht.bim.command.dto.WorkTimeDto">
+        UPDATE WorkTimeInfo
+        SET ProjectID = #{projectID},
+        ProjectName = #{projectName},
+        Details = #{details},
+        Approver = #{approver},
+        WorkTime = #{workTime},
+        OverTime = #{overTime},
+        OpenTime = #{openTime, javaType=java.util.Date, jdbcType=DATE},
+        CommitTime = #{commitTime, javaType=java.util.Date, jdbcType=DATE},
+        Status = #{status},
+        WithdrawReason = #{withdrawReason},
+        RejectReason = #{rejectReason},
+        OperUserID = #{operUserID},
+        OperTime = #{operTime, javaType=java.util.Date, jdbcType=DATE}
+        WHERE ID = #{iD}
+    </update>
+
+    <delete id="deleteWorkTime" parameterType="string">
+        DELETE FROM WorkTimeInfo WHERE ID = #{iD}
+    </delete>
+
+    <update id="updateStatus" parameterType="com.ht.bim.command.dto.WorkTimeDto">
+        UPDATE WorkTimeInfo
+        SET Status = #{status}
+        WHERE ID = #{iD}
+    </update>
+    <update id="updateStatusAndRR" parameterType="com.ht.bim.command.dto.WorkTimeDto">
+        UPDATE WorkTimeInfo
+        SET Status = #{status},
+        RejectReason = #{rejectReason}
+        WHERE ID = #{iD}
+    </update>
+    <update id="updateStatusandWR" parameterType="com.ht.bim.command.dto.WorkTimeDto">
+        UPDATE WorkTimeInfo
+        SET Status = #{status},
+        WithdrawReason = #{rejectReason}
+        WHERE ID = #{iD}
+    </update>
+</mapper>

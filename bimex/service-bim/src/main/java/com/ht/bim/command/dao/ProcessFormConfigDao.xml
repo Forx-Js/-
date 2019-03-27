@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ht.bim.command.dao.ProcessFormConfigDao">
+    <select id="find" resultType="com.ht.bim.command.po.ProcessFormConfigPo">
+      SELECT *
+      FROM ProcessFormConfig
+      WHERE
+          FormConfigID = #{formConfigID}
+          and IsDeleted = 0
+    </select>
+    <select id="findByKeyField" resultType="com.ht.bim.command.po.ProcessFormConfigPo">
+      SELECT *
+      FROM ProcessFormConfig
+      WHERE ProcessID = #{processID}
+          and NodeID = #{nodeID}
+          and IsDeleted = 0
+    </select>
+
+    <insert id="create">
+        INSERT INTO ProcessFormConfig (
+        FormConfigID,
+        ProcessID,
+        NodeID,
+        CreateTime,
+        CreateUserID,
+        UpdateTime,
+        UpdateUserID,
+        IsDeleted,
+        FormJson
+        ) VALUES (
+        #{formConfigID},
+        #{processID},
+        #{nodeID},
+        #{createTime, javaType=java.util.Date, jdbcType=TIMESTAMP},
+        #{createUserID},
+        #{updateTime, javaType=java.util.Date, jdbcType=TIMESTAMP},
+        #{updateUserID},
+        #{isDeleted},
+        #{formJson}
+        )
+    </insert>
+    <update id="update">
+        UPDATE ProcessFormConfig SET
+        UpdateTime = #{updateTime, javaType=java.util.Date, jdbcType=TIMESTAMP},
+        UpdateUserID = #{updateUserID},
+        FormJson = #{formJson}
+        where
+          FormConfigID = #{formConfigID}
+    </update>
+    <update id="delete">
+        UPDATE ProcessFormConfig
+        SET IsDeleted = 1
+        where
+          FormConfigID = #{formConfigID}
+    </update>
+
+</mapper>
